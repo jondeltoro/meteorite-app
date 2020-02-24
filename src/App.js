@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
-import moment from 'moment';
 
+import logo from './meteorite.svg';
 import { generateMeteoritesURL, defaultStartDate, defaultEndDate } from './config';
 import Map from './components/Map';
 
@@ -9,25 +9,49 @@ import './App.scss';
 
 // import './App.css';
 class App extends Component {
-  state = { meteorites: [], startDate: defaultStartDate, endDate: defaultEndDate };
+  state = { meteorites: [], startDate: defaultStartDate, endDate: defaultEndDate, pendingRequest: false };
   render() {
     return (
-      <div className="App d-flex flex-column border-d">
-        <div className="border-d">
-          <span>choose date:</span>
-          <span>
-            start date <input value={defaultStartDate} onChange={() => {}} />
-          </span>
-          <span>
-            end date <input value={defaultEndDate} onChange={() => {}} />
-          </span>
-          <button>Apply</button>
-        </div>
+      <div className="app d-flex flex-column border-d">
+        <header className="border-d container-fluid">
+          <div className="filters row">
+            <div className="title-wrapper col-4 d-flex align-items-center">
+              <img src={logo} className="logo" alt="logo" />
+              <span>Meteorite Landings</span>
+            </div>
+            <div className="col-2 d-flex align-items-center">
+              <label htmlFor="start-date">Start date</label>
+              <input
+                id="start-date"
+                className="date-element"
+                value={this.state.startDate}
+                onChange={e => this.setState({ startDate: e.currentTarget.value })}
+              />
+            </div>
+            <div className="col-2 d-flex align-items-center">
+              <label htmlFor="end-date">End date</label>
+              <input
+                id="end-date"
+                className="date-element"
+                value={this.state.endDate}
+                onChange={e => this.setState({ endDate: e.currentTarget.value })}
+              />
+            </div>
+            <div className="col-2 d-flex align-items-center">
+              <button
+                type="button"
+                className="btn btn-primary btn-sm"
+                disabled={this.state.pendingRequest}
+                onClick={_ => this.queryMeteorites()}
+              >
+                Apply filter
+              </button>
+            </div>
+          </div>
+        </header>
         <Map meteorites={this.state.meteorites}></Map>
-        <footer className="container-fluid border-d">
-          <hr />
-          <span>© 2020 Jonathan Del Toro</span>
-          <hr />
+        <footer className="container-fluid d-flex border-d">
+          <div className="content">© 2020 Jonathan Del Toro</div>
         </footer>
       </div>
     );
@@ -38,6 +62,12 @@ class App extends Component {
   }
 
   queryMeteorites() {
+    if (this.pendingRequest) {
+      return false;
+    }
+
+    this.setState({ pendingRequest: true });
+
     axios
       .get(generateMeteoritesURL(this.state.startDate, this.state.endDate))
       .then(({ data }) => {
@@ -57,15 +87,10 @@ class App extends Component {
             }, {})
         );
       })
-      .catch(e => console.error(e));
+      .catch(e => console.error(e))
+      .finally(_ => this.setState({ pendingRequest: false }));
   }
 
-  filterMeteoritesByDate() {
-    return this.state.meteorites.filter(meteorite => {
-      const year = moment(meteorite.year.substr(0, 10));
-      return year.isSameOrAfter(this.state.startDate) && year.isSameOrBefore(this.state.endDate);
-    });
-  }
 }
 
 export default App;

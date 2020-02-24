@@ -58,7 +58,6 @@ class Map extends Component {
 
   renderMeteorites() {
     const meteorites = this.props.meteorites || [];
-    console.log(meteorites);
     return meteorites.map((meteorite, i) => {
       const { reclat: lat, reclong: long } = meteorite;
       if (lat === undefined || long === undefined) {
@@ -70,7 +69,7 @@ class Map extends Component {
 
   render() {
     return (
-      <div style={{ height: '85vh', width: '100%' }}>
+      <div style={{ height: '80vh', width: '100%' }}>
         <GoogleMapReact
           bootstrapURLKeys={{ key: process.env.REACT_APP_GMAP_API_KEY || '' }}
           defaultCenter={this.props.center}
