@@ -5,7 +5,7 @@ import moment from 'moment';
 import './App.scss';
 import logo from './assets/meteorite.svg';
 
-import { generateMeteoritesURL, defaultStartDate, defaultEndDate, timeStampFormat } from './config';
+import { generateMeteoritesURL, defaultStartDate, defaultEndDate, timeStampFormat, dateFormat } from './config';
 
 import Map from './components/Map';
 import Controls from './components/Controls';
@@ -86,9 +86,7 @@ class App extends Component {
     axios
       .get(generateMeteoritesURL(this.state.startDate, this.state.endDate))
       .then(({ data }) => {
-        const processedDataset = data
-          .filter(m => m.year !== undefined && m.reclat !== undefined && m.reclong !== undefined)
-          .map(m => (m.show = false) || m);
+        const processedDataset = data.map(m => ((m.year = moment(m.year).format(dateFormat)) && (m.show = false)) || m);
 
         this.setState({
           meteorites: processedDataset,
