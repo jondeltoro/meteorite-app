@@ -35,7 +35,6 @@ class Controls extends Component {
           <button
             type="button"
             className="btn btn-primary btn-sm btn-query"
-            style={{ minWidth: '90px' }}
             disabled={this.props.pendingRequest}
             onClick={_ => this.queryMeteorites()}
           >
@@ -46,7 +45,6 @@ class Controls extends Component {
           <button
             type="button"
             className="btn btn-primary btn-sm btn-toggle"
-            style={{ minWidth: '110px' }}
             disabled={this.props.changeLogIsEmpty}
             onClick={_ => this.toggleChangeHistory()}
           >

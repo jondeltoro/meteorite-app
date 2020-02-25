@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import axios from 'axios';
+import moment from 'moment';
 
+import './App.scss';
 import logo from './meteorite.svg';
-import { generateMeteoritesURL, defaultStartDate, defaultEndDate } from './config';
+import { generateMeteoritesURL, defaultStartDate, defaultEndDate, timeStampFormat } from './config';
 
 import Map from './components/Map';
 import Controls from './components/Controls';
-
-import './App.scss';
+import ChangeTable from './components/ChangeTable';
 
 class App extends Component {
   state = {
@@ -49,8 +50,8 @@ class App extends Component {
             <div className={`map-wrapper ${this.state.showChangeHistory ? 'col-6' : 'col-12'}`}>
               <Map meteorites={this.state.meteorites}></Map>
             </div>
-            <div className={`${this.state.showChangeHistory ? 'col-6' : ''}`} style={{ borderLeft: '1px solid black' }}>
-              <div style={{ height: '100%' }}></div>
+            <div className={`change-log-wrapper ${this.state.showChangeHistory ? 'col-6' : 'd-none'}`}>
+              <ChangeTable changeLog={this.state.changeLog}></ChangeTable>
             </div>
           </div>
         </main>
@@ -83,21 +84,27 @@ class App extends Component {
         this.setState({
           meteorites: data.filter(m => m.year !== undefined && m.reclat !== undefined && m.reclong !== undefined),
         });
-        console.log(
-          'data',
-          data
-            .filter(m => m.year !== undefined && m.reclat !== undefined && m.reclong !== undefined)
-            .reduce((ac, e) => {
-              if (e.year.substr(0, 4) < 1000) {
-                console.log(e);
-              }
-              ac[e.year.substr(0, 4)] = ac[e.year.substr(0, 4)] ? ac[e.year.substr(0, 4)] + 1 : 1;
-              return ac;
-            }, {})
-        );
       })
       .catch(e => console.error(e))
       .finally(_ => this.setState({ pendingRequest: false }));
+  }
+
+  addChangeToHistory(oldRecord, newRecord) {
+    const changeLog = this.state.changeLog;
+    const trimRecord = ({ name, recclass, mass }) => {
+      return {
+        name,
+        class: recclass,
+        mass,
+      };
+    };
+    changeLog.push({
+      timestamp: moment().format(timeStampFormat),
+      id: oldRecord.id,
+      oldRecord: trimRecord(oldRecord),
+      newRecord: trimRecord(newRecord),
+    });
+    this.setState({ changeLog });
   }
 
   toggleChangeHistory() {

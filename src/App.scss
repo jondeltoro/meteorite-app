@@ -26,7 +26,13 @@
 
   main {
     div.map-wrapper {
+      height: 80vh;
       padding: 0;
+    }
+
+    div.change-log-wrapper {
+      height: 80vh;
+      border-left: 1px solid #333;
     }
   }
 

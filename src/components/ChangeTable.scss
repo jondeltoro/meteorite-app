@@ -1,0 +1,13 @@
+.change-table {
+  height: 100%;
+
+  div.table-wrapper {
+    margin-bottom: 15px;
+    overflow: auto;
+
+    & > table {
+      margin-bottom: 0;
+      font-size: 14px;
+    }
+  }
+}

@@ -74,7 +74,6 @@ class Map extends Component {
 
   render() {
     return (
-      <div style={{ height: '80vh', width: '100%' }}>
         <GoogleMapReact
           bootstrapURLKeys={{ key: process.env.REACT_APP_GMAP_API_KEY || '' }}
           defaultCenter={this.props.center}
@@ -83,7 +82,6 @@ class Map extends Component {
         >
           {this.renderMeteorites()}
         </GoogleMapReact>
-      </div>
     );
   }
 }
