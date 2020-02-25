@@ -9,9 +9,15 @@ import Controls from './components/Controls';
 
 import './App.scss';
 
-// import './App.css';
 class App extends Component {
-  state = { meteorites: [], startDate: defaultStartDate, endDate: defaultEndDate, pendingRequest: false };
+  state = {
+    meteorites: [],
+    changeLog: [],
+    startDate: defaultStartDate,
+    endDate: defaultEndDate,
+    pendingRequest: false,
+    showChangeHistory: false,
+  };
 
   render() {
     const filterProps = {
@@ -20,6 +26,8 @@ class App extends Component {
       pendingRequest: this.state.pendingRequest,
       handleChangeDate: this.changeDate.bind(this),
       handleQueryMeteorites: this.queryMeteorites.bind(this),
+      handleToggleChangeHistory: this.toggleChangeHistory.bind(this),
+      changeLogIsEmpty: this.state.changeLog.length <= 0,
     };
 
     return (
@@ -35,7 +43,18 @@ class App extends Component {
             </div>
           </div>
         </header>
-        <Map meteorites={this.state.meteorites}></Map>
+
+        <main className="container-fluid">
+          <div className="row">
+            <div className={`map-wrapper ${this.state.showChangeHistory ? 'col-6' : 'col-12'}`}>
+              <Map meteorites={this.state.meteorites}></Map>
+            </div>
+            <div className={`${this.state.showChangeHistory ? 'col-6' : ''}`} style={{ borderLeft: '1px solid black' }}>
+              <div style={{ height: '100%' }}></div>
+            </div>
+          </div>
+        </main>
+
         <footer className="container-fluid d-flex border-d">
           <div className="content">© 2020 Jonathan Del Toro</div>
         </footer>
@@ -81,6 +100,9 @@ class App extends Component {
       .finally(_ => this.setState({ pendingRequest: false }));
   }
 
+  toggleChangeHistory() {
+    this.setState({ showChangeHistory: !this.state.showChangeHistory });
+  }
 }
 
 export default App;

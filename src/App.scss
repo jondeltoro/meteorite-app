@@ -6,6 +6,7 @@
   header {
     padding-top: 12px;
     padding-bottom: 12px;
+    border-bottom: 1px solid #333;
     div.title-wrapper {
       font-family: 'Ubuntu';
       font-size: 18px;
@@ -18,6 +19,12 @@
     }
     div.controls-wrapper {
       overflow-x: auto;
+    }
+  }
+
+  main {
+    div.map-wrapper {
+      padding: 0;
     }
   }
 
@@ -42,5 +49,6 @@
     }
   }
 }
+
 .border-d {
 }

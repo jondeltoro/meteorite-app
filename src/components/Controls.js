@@ -7,6 +7,7 @@ class Controls extends Component {
     super(props);
     this.changeDate = props.handleChangeDate;
     this.queryMeteorites = props.handleQueryMeteorites;
+    this.toggleChangeHistory = props.handleToggleChangeHistory;
   }
 
   render() {
@@ -33,7 +34,7 @@ class Controls extends Component {
         <div className="col-2 d-flex align-items-center justify-content-center">
           <button
             type="button"
-            className="btn btn-primary btn-sm"
+            className="btn btn-primary btn-sm btn-query"
             style={{ minWidth: '90px' }}
             disabled={this.props.pendingRequest}
             onClick={_ => this.queryMeteorites()}
@@ -44,10 +45,10 @@ class Controls extends Component {
         <div className="col d-flex align-items-center justify-content-center">
           <button
             type="button"
-            className="btn btn-primary btn-sm"
+            className="btn btn-primary btn-sm btn-toggle"
             style={{ minWidth: '110px' }}
-            disabled={this.props.pendingRequest}
-            onClick={_ => this.queryMeteorites()}
+            disabled={this.props.changeLogIsEmpty}
+            onClick={_ => this.toggleChangeHistory()}
           >
             Toggle history
           </button>
