@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import moment from 'moment';
+import { isEqual } from 'lodash';
 
 import './App.scss';
 import logo from './assets/meteorite.svg';
@@ -53,6 +54,7 @@ class App extends Component {
               <Map
                 meteorites={this.state.meteorites}
                 handleSetMeteoriteShowFlag={this.setMeteoriteShowFlag.bind(this)}
+                handleChangeMeteoriteData={this.changeMeteoriteData.bind(this)}
               ></Map>
             </div>
             <div className={`change-log-wrapper ${this.state.showChangeHistory ? 'col-6' : 'd-none'}`}>
@@ -92,22 +94,23 @@ class App extends Component {
           meteorites: processedDataset,
           activeMeteorite: null,
         });
-
-        processedDataset.slice(1, 10).forEach(e => {
-          this.addChangeToHistory(e, { ...e, mass: e.mass + 1 });
-        });
       })
       .catch(e => console.error(e))
       .finally(_ => this.setState({ pendingRequest: false }));
   }
 
+  toggleChangeHistoryPanel() {
+    this.setState({ showChangeHistory: !this.state.showChangeHistory });
+  }
+
   addChangeToHistory(oldRecord, newRecord) {
     const changeLog = [...this.state.changeLog];
-    const trimRecord = ({ name, recclass, mass }) => {
+    const trimRecord = ({ name, recclass, mass, year }) => {
       return {
         name,
         class: recclass,
         mass,
+        year,
       };
     };
     changeLog.push({
@@ -119,8 +122,19 @@ class App extends Component {
     this.setState({ changeLog });
   }
 
-  toggleChangeHistoryPanel() {
-    this.setState({ showChangeHistory: !this.state.showChangeHistory });
+  changeMeteoriteData(oldRecord, newRecord) {
+    if (isEqual(oldRecord, newRecord)) {
+      return this.setMeteoriteShowFlag(oldRecord, false);
+    }
+
+    this.setState(state => {
+      const meteorites = [...state.meteorites];
+      const index = state.activeMeteorite;
+      meteorites[index] = { ...newRecord, show: false };
+      return { meteorites, activeMeteorite: null };
+    });
+
+    this.addChangeToHistory(oldRecord, newRecord);
   }
 
   setMeteoriteShowFlag(meteorite, flag = true) {

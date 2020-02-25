@@ -31,5 +31,12 @@ div.info-window {
       width: 40px;
       padding-top: 5px;
     }
+
+    div.invalid-msg {
+      height: 10px;
+      margin-bottom: 5px;
+      color: red;
+      text-align: center;
+    }
   }
 }

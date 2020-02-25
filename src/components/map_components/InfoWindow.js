@@ -3,8 +3,9 @@ import React, { useState } from 'react';
 import './InfoWindow.scss';
 
 function InfoWindow(props) {
-  const { data, setMeteoriteShowFlag } = props;
+  const { data, setMeteoriteShowFlag, changeMeteoriteData } = props;
   const [editMode, setEditMode] = useState(false);
+  const [isInvalid, setIsInvalid] = useState(false);
   const [clonedData, setClonedData] = useState({ ...data });
 
   const changeInternalVal = (event, field) => {
@@ -32,6 +33,7 @@ function InfoWindow(props) {
             <span className="field-name">Mass</span>
             <input type="text" required value={clonedData.mass} onChange={e => changeInternalVal(e, 'mass')} />
           </div>
+          <div className="invalid-msg">{isInvalid ? 'All fields are required' : ''}</div>
         </form>
       );
     }
@@ -49,13 +51,30 @@ function InfoWindow(props) {
         <div>
           <span className="field-name">Mass:</span> {data.mass}
         </div>
+        <div className="invalid-msg">{isInvalid ? 'All fields are required' : ''}</div>
       </React.Fragment>
     );
   };
 
   const saveEditButtonAction = () => {
-    setEditMode(!editMode);
+    const isValid = (str = '') => {
+      return str.trim().length > 0;
+    };
+    if (!editMode) {
+      setEditMode(!editMode);
+    } else if (
+      isValid(clonedData.name) &&
+      isValid(clonedData.year) &&
+      isValid(clonedData.recclass) &&
+      isValid(clonedData.mass)
+    ) {
+      changeMeteoriteData(data, clonedData);
+      setIsInvalid(false);
+    } else {
+      setIsInvalid(true);
+    }
   };
+
   return (
     <div className="info-window">
       <h5 className="iw-title">Meteorite info</h5>

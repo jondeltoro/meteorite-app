@@ -10,6 +10,7 @@ class Map extends Component {
   constructor(props) {
     super(props);
     this.setMeteoriteShowFlag = props.handleSetMeteoriteShowFlag;
+    this.changeMeteoriteData = props.handleChangeMeteoriteData;
   }
 
   createMapOptions() {
@@ -48,6 +49,7 @@ class Map extends Component {
           show={show}
           data={meteorite}
           setMeteoriteShowFlag={this.setMeteoriteShowFlag}
+          changeMeteoriteData={this.changeMeteoriteData}
         />
       );
     });

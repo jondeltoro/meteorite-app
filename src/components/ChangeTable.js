@@ -38,7 +38,7 @@ class ChangeTable extends Component {
   renderRows() {
     return this.props.changeLog.map((record, i) => (
       <tr key={`log-${i}`}>
-        <th scope="row">{record.timestamp}</th>
+        <td>{record.timestamp}</td>
         <td>{record.id}</td>
         <td>{this.formatObj(record.oldRecord)}</td>
         <td>{this.formatObj(record.newRecord)}</td>
