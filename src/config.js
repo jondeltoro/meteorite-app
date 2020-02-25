@@ -11,3 +11,56 @@ export const generateMeteoritesURL = (startDate, endDate) => {
 };
 export const defaultStartDate = '01/01/2010';
 export const defaultEndDate = moment().format(dateFormat);
+export const defaultMapProps = {
+  center: {
+    lat: 35.85,
+    lng: -100,
+  },
+  zoom: 4,
+};
+export const defaultMapOptions = {
+  fullscreenControl: false,
+  styles: [
+    {
+      featureType: 'administrative.land_parcel',
+      stylers: [
+        {
+          visibility: 'off',
+        },
+      ],
+    },
+    {
+      featureType: 'administrative.neighborhood',
+      stylers: [
+        {
+          visibility: 'off',
+        },
+      ],
+    },
+    {
+      featureType: 'poi',
+      stylers: [
+        {
+          visibility: 'off',
+        },
+      ],
+    },
+    {
+      featureType: 'road',
+      elementType: 'labels',
+      stylers: [
+        {
+          visibility: 'off',
+        },
+      ],
+    },
+    {
+      featureType: 'transit',
+      stylers: [
+        {
+          visibility: 'off',
+        },
+      ],
+    },
+  ],
+};

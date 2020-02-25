@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { isEqual } from 'lodash';
 
 import './Controls.scss';
 
@@ -7,7 +8,16 @@ class Controls extends Component {
     super(props);
     this.changeDate = props.handleChangeDate;
     this.queryMeteorites = props.handleQueryMeteorites;
-    this.toggleChangeHistory = props.handleToggleChangeHistory;
+    this.toggleChangeHistoryPanel = props.handleToggleChangeHistoryPanel;
+  }
+
+  shouldComponentUpdate(nextProps) {
+    return !(
+      isEqual(nextProps.startDate, this.props.startDate) &&
+      isEqual(nextProps.endDate, this.props.endDate) &&
+      isEqual(nextProps.pendingRequest, this.props.pendingRequest) &&
+      isEqual(nextProps.changeLogIsEmpty, this.props.changeLogIsEmpty)
+    );
   }
 
   render() {
@@ -46,7 +56,7 @@ class Controls extends Component {
             type="button"
             className="btn btn-primary btn-sm btn-toggle"
             disabled={this.props.changeLogIsEmpty}
-            onClick={_ => this.toggleChangeHistory()}
+            onClick={_ => this.toggleChangeHistoryPanel()}
           >
             Toggle history
           </button>

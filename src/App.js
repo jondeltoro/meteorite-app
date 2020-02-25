@@ -3,7 +3,8 @@ import axios from 'axios';
 import moment from 'moment';
 
 import './App.scss';
-import logo from './meteorite.svg';
+import logo from './assets/meteorite.svg';
+
 import { generateMeteoritesURL, defaultStartDate, defaultEndDate, timeStampFormat } from './config';
 
 import Map from './components/Map';
@@ -18,6 +19,7 @@ class App extends Component {
     endDate: defaultEndDate,
     pendingRequest: false,
     showChangeHistory: false,
+    activeMeteorite: null,
   };
 
   render() {
@@ -27,7 +29,7 @@ class App extends Component {
       pendingRequest: this.state.pendingRequest,
       handleChangeDate: this.changeDate.bind(this),
       handleQueryMeteorites: this.queryMeteorites.bind(this),
-      handleToggleChangeHistory: this.toggleChangeHistory.bind(this),
+      handleToggleChangeHistoryPanel: this.toggleChangeHistoryPanel.bind(this),
       changeLogIsEmpty: this.state.changeLog.length <= 0,
     };
 
@@ -48,7 +50,10 @@ class App extends Component {
         <main className="container-fluid">
           <div className="row">
             <div className={`map-wrapper ${this.state.showChangeHistory ? 'col-6' : 'col-12'}`}>
-              <Map meteorites={this.state.meteorites}></Map>
+              <Map
+                meteorites={this.state.meteorites}
+                handleSetMeteoriteShowFlag={this.setMeteoriteShowFlag.bind(this)}
+              ></Map>
             </div>
             <div className={`change-log-wrapper ${this.state.showChangeHistory ? 'col-6' : 'd-none'}`}>
               <ChangeTable changeLog={this.state.changeLog}></ChangeTable>
@@ -81,8 +86,17 @@ class App extends Component {
     axios
       .get(generateMeteoritesURL(this.state.startDate, this.state.endDate))
       .then(({ data }) => {
+        const processedDataset = data
+          .filter(m => m.year !== undefined && m.reclat !== undefined && m.reclong !== undefined)
+          .map(m => (m.show = false) || m);
+
         this.setState({
-          meteorites: data.filter(m => m.year !== undefined && m.reclat !== undefined && m.reclong !== undefined),
+          meteorites: processedDataset,
+          activeMeteorite: null,
+        });
+
+        processedDataset.slice(1, 10).forEach(e => {
+          this.addChangeToHistory(e, { ...e, mass: e.mass + 1 });
         });
       })
       .catch(e => console.error(e))
@@ -90,7 +104,7 @@ class App extends Component {
   }
 
   addChangeToHistory(oldRecord, newRecord) {
-    const changeLog = this.state.changeLog;
+    const changeLog = [...this.state.changeLog];
     const trimRecord = ({ name, recclass, mass }) => {
       return {
         name,
@@ -107,8 +121,21 @@ class App extends Component {
     this.setState({ changeLog });
   }
 
-  toggleChangeHistory() {
+  toggleChangeHistoryPanel() {
     this.setState({ showChangeHistory: !this.state.showChangeHistory });
+  }
+
+  setMeteoriteShowFlag(meteorite, flag = true) {
+    this.setState(state => {
+      const meteorites = [...state.meteorites];
+      const activeMeteorite = state.activeMeteorite;
+      const index = meteorites.indexOf(meteorite);
+      if (flag && activeMeteorite !== null) {
+        meteorites[activeMeteorite].show = false;
+      }
+      meteorites[index] = { ...meteorites[index], show: flag };
+      return { meteorites, activeMeteorite: flag ? index : null };
+    });
   }
 }
 

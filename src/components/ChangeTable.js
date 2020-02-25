@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { isEqual } from 'lodash';
 
 import './ChangeTable.scss';
 
@@ -7,15 +8,8 @@ class ChangeTable extends Component {
     return Object.keys(record).map((key, i) => <div key={`obj-${i}`}>{`${key}: ${record[key]}`}</div>);
   }
 
-  renderRows() {
-    return this.props.changeLog.map((record, i) => (
-      <tr key={`log-${i}`}>
-        <th scope="row">{record.timestamp}</th>
-        <td>{record.id}</td>
-        <td>{this.formatObj(record.oldRecord)}</td>
-        <td>{this.formatObj(record.newRecord)}</td>
-      </tr>
-    ));
+  shouldComponentUpdate(nextProps) {
+    return !isEqual(nextProps.changeLog, this.props.changeLog);
   }
 
   render() {
@@ -39,6 +33,17 @@ class ChangeTable extends Component {
         </div>
       </div>
     );
+  }
+
+  renderRows() {
+    return this.props.changeLog.map((record, i) => (
+      <tr key={`log-${i}`}>
+        <th scope="row">{record.timestamp}</th>
+        <td>{record.id}</td>
+        <td>{this.formatObj(record.oldRecord)}</td>
+        <td>{this.formatObj(record.newRecord)}</td>
+      </tr>
+    ));
   }
 }
 

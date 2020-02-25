@@ -1,0 +1,27 @@
+div.info-window {
+  position: relative;
+  bottom: 150px;
+  left: -45px;
+  z-index: 100;
+  width: 220px;
+  padding: 10px;
+  font-size: 14px;
+  background-color: #fff;
+  box-shadow: 0 2px 7px 1px rgba(0, 0, 0, 0.3);
+
+  h5.iw-title {
+    text-align: center;
+  }
+
+  div.marker-buttons {
+    width: 100%;
+    padding-top: 5px;
+    text-align: center;
+
+    button {
+      width: 75px;
+      margin-right: 5px;
+      margin-left: 5px;
+    }
+  }
+}
