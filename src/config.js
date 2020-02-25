@@ -1,6 +1,6 @@
 import moment from 'moment';
 
-export const maxResults = 10000;
+export const maxResults = 1000;
 export const dateFormat = 'MM/DD/YYYY';
 export const apiDateFormat = 'YYYY-MM-DD';
 export const timeStampFormat = 'MM/DD/YYYY HH:mm:ss';
