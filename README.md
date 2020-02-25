@@ -1,4 +1,18 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Meteorite Landings
+https://jdtb-meteorite-app.herokuapp.com/
+
+
+### Steps to install
+1.- clone the repository -> git clone git@github.com:jondeltoro/meteorite-app.git
+
+2.- change directory -> cd meteorite-app
+
+3.- install dependencies -> npm install
+
+4.- run app -> npm start
+
+5.- Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+
 
 ## Available Scripts
 
