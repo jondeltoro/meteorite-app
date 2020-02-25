@@ -4,12 +4,11 @@
   width: 100%;
 
   header {
-    height: 64px;
     padding-top: 12px;
     padding-bottom: 12px;
     div.title-wrapper {
       font-family: 'Ubuntu';
-      font-size: 24px;
+      font-size: 18px;
       font-weight: bold;
       img.logo {
         width: 36px;
@@ -17,15 +16,8 @@
         margin-top: -5px;
       }
     }
-    div.filters {
-      // margin-bottom: 5px;
-      label {
-        margin-bottom: 0;
-      }
-
-      input.date-element {
-        width: 100px;
-      }
+    div.controls-wrapper {
+      overflow-x: auto;
     }
   }
 

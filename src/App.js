@@ -3,49 +3,35 @@ import axios from 'axios';
 
 import logo from './meteorite.svg';
 import { generateMeteoritesURL, defaultStartDate, defaultEndDate } from './config';
+
 import Map from './components/Map';
+import Controls from './components/Controls';
 
 import './App.scss';
 
 // import './App.css';
 class App extends Component {
   state = { meteorites: [], startDate: defaultStartDate, endDate: defaultEndDate, pendingRequest: false };
+
   render() {
+    const filterProps = {
+      startDate: this.state.startDate,
+      endDate: this.state.endDate,
+      pendingRequest: this.state.pendingRequest,
+      handleChangeDate: this.changeDate.bind(this),
+      handleQueryMeteorites: this.queryMeteorites.bind(this),
+    };
+
     return (
       <div className="app d-flex flex-column border-d">
         <header className="border-d container-fluid">
-          <div className="filters row">
+          <div className="row">
             <div className="title-wrapper col-4 d-flex align-items-center">
               <img src={logo} className="logo" alt="logo" />
               <span>Meteorite Landings</span>
             </div>
-            <div className="col-2 d-flex align-items-center">
-              <label htmlFor="start-date">Start date</label>
-              <input
-                id="start-date"
-                className="date-element"
-                value={this.state.startDate}
-                onChange={e => this.setState({ startDate: e.currentTarget.value })}
-              />
-            </div>
-            <div className="col-2 d-flex align-items-center">
-              <label htmlFor="end-date">End date</label>
-              <input
-                id="end-date"
-                className="date-element"
-                value={this.state.endDate}
-                onChange={e => this.setState({ endDate: e.currentTarget.value })}
-              />
-            </div>
-            <div className="col-2 d-flex align-items-center">
-              <button
-                type="button"
-                className="btn btn-primary btn-sm"
-                disabled={this.state.pendingRequest}
-                onClick={_ => this.queryMeteorites()}
-              >
-                Apply filter
-              </button>
+            <div className="controls-wrapper col d-flex align-items-center">
+              <Controls {...filterProps}></Controls>
             </div>
           </div>
         </header>
@@ -59,6 +45,10 @@ class App extends Component {
 
   componentDidMount() {
     this.queryMeteorites();
+  }
+
+  changeDate(auxDateName = '', newDate) {
+    this.setState({ [auxDateName]: newDate });
   }
 
   queryMeteorites() {

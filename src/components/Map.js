@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import GoogleMapReact from 'google-map-react';
+import { isEqual } from 'lodash';
 
-const AnyReactComponent = ({ text }) => <div>{text}</div>;
+const AnyReactComponent = ({ text }) => <div className="c-meteorite">{text}</div>;
 
 class Map extends Component {
   createMapOptions(maps) {
@@ -54,6 +55,10 @@ class Map extends Component {
         },
       ],
     };
+  }
+
+  shouldComponentUpdate(nextProps) {
+    return !isEqual(nextProps, this.props);
   }
 
   renderMeteorites() {

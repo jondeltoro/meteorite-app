@@ -1,0 +1,17 @@
+.controls {
+  display: flex;
+  padding: 0;
+  & > div.col {
+    padding-right: 5px;
+    padding-left: 5px;
+  }
+  label {
+    margin-bottom: 0;
+    margin-right: 3px;
+    font-size: 12px;
+  }
+
+  input.date-element {
+    width: 100px;
+  }
+}
