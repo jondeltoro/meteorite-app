@@ -58,8 +58,8 @@ describe('App component', () => {
   });
 
   describe('Integration tests', () => {
-    it('Should render', async () => {
-      let wrapper = mount(<App />);
+    it('Should render', () => {
+      const wrapper = mount(<App />);
       let state = wrapper.state();
       const queryURL = generateMeteoritesURL(state.startDate, state.endDate);
       mockAxios.mockResponseFor({ url: queryURL }, { data: meteoritesData });
