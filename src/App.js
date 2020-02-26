@@ -95,7 +95,7 @@ class App extends Component {
           activeMeteorite: null,
         });
       })
-      .catch(e => console.error(e))
+      .catch(e => console.error('Error trying to fetch dataset', e))
       .finally(_ => this.setState({ pendingRequest: false }));
   }
 

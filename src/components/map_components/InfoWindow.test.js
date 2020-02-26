@@ -46,7 +46,7 @@ describe('InfoWindow component', () => {
     });
 
     it('Should render correctly when editing is true', () => {
-      let wrapper = shallow(<InfoWindow {...infoWindowProps} />);
+      const wrapper = shallow(<InfoWindow {...infoWindowProps} />);
       const data = infoWindowProps.data;
 
       // trigger edit mode
@@ -75,7 +75,7 @@ describe('InfoWindow component', () => {
     });
 
     it('Should display an error when trying to save and any field is empty', () => {
-      let wrapper = shallow(<InfoWindow {...infoWindowProps} />);
+      const wrapper = shallow(<InfoWindow {...infoWindowProps} />);
       const emptyStringFakeEvent = {
         stopPropagation: () => {},
         currentTarget: { value: '' },
