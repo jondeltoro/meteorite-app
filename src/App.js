@@ -74,12 +74,12 @@ class App extends Component {
     this.queryMeteorites();
   }
 
-  changeDate(auxDateName = '', newDate) {
+  changeDate(auxDateName, newDate) {
     this.setState({ [auxDateName]: newDate });
   }
 
   queryMeteorites() {
-    if (this.pendingRequest) {
+    if (this.state.pendingRequest) {
       return false;
     }
 
